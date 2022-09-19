@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head> 
+
+        <style>
+            html{
+	            color: whitesmoke;
+	            font-family: Arial, Helvetica, sans-serif;
+	            font-size: 62.5%;
+            }
+            body{
+	            background: #151515;
+	            font-size: 1.4rem;
+            }
+            .wrapper{
+	            display: block;
+	            margin: 0 auto;
+	            width: 640px;
+            }
+            a{
+	            color: whitesmoke;
+            }
+            canvas{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);               
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <canvas class="stage"></canvas>
+        </div>
+
+        <script>
+            
+            
+
+            const canvas = document.querySelector('.stage'),
+	            ctx = canvas.getContext('2d'),
+	            note = document.querySelector('.note'),
+	            canvasSize = 1280,
+	            height = 960,
+	            midX = canvasSize / 2,
+	            midY = canvasSize / 2,
+	            fillColour = 'hsla(90, 0%, 20%, 0)',
+	            primeColour = 'hsl(0, 80%, 100%)',
+	            mcos = Math.cos,
+	            msin = Math.sin,
+	            msqrt = Math.sqrt,
+	            mmax = Math.max;
+            let seed,
+	            max,
+	            scalar,
+	            count,
+	            dotSize,
+	            batchSize,
+	            animCall;
+
+                canvas.width = canvasSize;
+                canvas.height = canvasSize;
+                ctx.fillStyle = primeColour;
+
+                canvas.style.width = canvasSize + 'px';
+
+                function grabUI(){
+	                let radioSet = [...document.querySelectorAll('.zooms')];
+	                for(let i = 0; i < radioSet.length; i++){
+		                radioSet[i].addEventListener('change', (e) => {
+			                handleZoomChange(document.querySelector('input[name="zoooms"]:checked').value);
+		                });
+	                }
+                }
+
+                function handleZoomChange(e){
+	                let id = e * 1;
+	                dotSize = id < 4 ? 1 : .1;
+	                cancelAnimationFrame(animCall);
+	                seed = 100;
+	                max = midX * seed;
+	                scalar = 1 / seed;
+	                batchSize = mmax(3, seed / 5);
+	                ctx.clearRect(0, 0, canvasSize, canvasSize);
+	                count = 1;
+	                
+	                animCall = requestAnimationFrame(update);
+                }
+
+                function draw(pt,isPrime = false){
+	                if(isPrime){
+		                ctx.fillRect(pt.x,pt.y,dotSize,dotSize);
+	                }
+                }
+                function getPolarPoint(distance, radian){
+	                return {x:distance * mcos(radian) + midX, y:distance * msin(radian) + midY}
+                }
+
+                // no negatives, even numbers nor divisors
+                function isPrime(num) {
+                    if (num <= 1) return false; // negative
+                    if (num % 2 == 0 && num > 2) return false; // even
+                    let s = msqrt(num);
+                    for(let i = 3; i <= s; i++) {
+                        if(num % i === 0) return false; // divisor
+                    }
+                    return true;
+                }
+
+                function update(){
+	                for(let i=0; i<batchSize; i++){
+		                draw(getPolarPoint(count * scalar, count), isPrime(count));
+		                count++;
+	                }
+	                if(count < max){
+		                animCall = requestAnimationFrame(update);
+	                }
+                }
+                grabUI();
+                handleZoomChange(0);
+        </script>
+
+    </body>
+
+</html>
