@@ -1,5 +1,5 @@
 # portfolio_blog
-Dynamic Django portfolio site with blog and comment functionality.
+Dynamic Django portfolio app with blog and comment functionality.
 
 Deployed example:
 
