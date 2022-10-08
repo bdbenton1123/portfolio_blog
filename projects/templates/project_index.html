@@ -5,18 +5,18 @@
 <img src="http://localhost:8000/static/img/ProfileFull.png" width="600" ALIGN="left" HSPACE=”50”>
 <font size="+2">Hello, I'm Brandon Benton.</font>
 <br><br>
-<font size="+2">Welcome to my portfolio and blog, I've built it from scratch using Python's Django framework and deployed it on my VPS with PostgreSQL.</font>
+<font size="+2">Welcome to my portfolio and blog, I've built it from scratch using Python's Django framework.</font>
 <br><br>
 <font size="+2">For four years, I've written books, articles, and copy on business, technology, economics, finance, cybersecurity, and other topics.</font>
 <br><br>
 <font size="+2">This site was created to demonstrate proficiency to clients and employers. Below, you can find my programming projects. Above, you can find my blog, where I publish articles on projects, writing, mathematics, and life.</font>
 <br><br>
-<font size="+2">I hope you find this site interesting, it is a garden of my mind. Thank you for visiting.</font>
+<font size="+2">I hope you find this site interesting, check out my <a href="https://github.com/bdbenton1123">GitHub</a> for more projects and source code. Thank you for visiting.</font>
 <br><br><br><br><br><br>
 <h1>Projects</h1>
 <br>
 <div class="row">
-{% for project in projects %}
+    {% for project in projects %}
     <div class="col-md-4">
         <div class="card mb-2">
             <img class="card-img-top" src="{% static project.image %}">
